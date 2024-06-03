@@ -7,11 +7,18 @@ locals {
   environment = "dev"
 }
 
+include {
+  path = find_in_parent_folders()
+}
+
 # These are inputs that need to be passed for the terragrunt configuration
 inputs = {
+  environment = "development"
+  env_prefix = "dev"
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = "${local.environment}"
+    Source      = "https://github.com/kwame-mintah/terraform-azure-data-scientist-associate"
   }
 }
 
