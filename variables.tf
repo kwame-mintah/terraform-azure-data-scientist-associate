@@ -64,6 +64,19 @@ EOF
   type = string
 }
 
+variable "env_prefix" {
+  description = <<-EOF
+  The prefix added to resources in the environment.
+
+EOF
+
+  type = string
+  validation {
+    condition     = contains(["dev", "staging", "prod", "sandbox"], var.env_prefix)
+    error_message = "The env_prefix value must be either: dev, staging, prod or sandbox."
+  }
+}
+
 variable "location" {
   description = <<-EOF
   The Azure Region where the Resource Group should exist. 
@@ -71,8 +84,8 @@ variable "location" {
 
 EOF
 
-  type = string
-
+  type    = string
+  default = "West Europe"
 }
 
 variable "tags" {
