@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "ms-toolsai.vscode-ai",
+    "ms-toolsai.vscode-ai-remote",
+    "msazurermtools.azurerm-vscode-tools"
+  ]
+}
