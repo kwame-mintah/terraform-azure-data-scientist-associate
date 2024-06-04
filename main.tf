@@ -30,13 +30,19 @@ module "tfstate_storage" {
   tags                = local.common_tags
 }
 
+#trivy:ignore:AVD-AZU-0012
 module "ml_workspace_storage" {
   source              = "./modules/storage_account"
   name                = "mlwrkspc${var.env_prefix}"
   resource_group_name = azurerm_resource_group.resource_group.name
   location            = azurerm_resource_group.resource_group.location
   personal_ip_address = [var.personal_ip_address]
-  tags                = local.common_tags
+  # Either put all resources on a virtual network or allow access from all network.
+  # Choice needs to be made when creating compute resources etc. Virtual networking
+  # OOO for demostrating, so allowing access from everywhere.
+  #checkov:skip=CKV_AZURE_35:see comment above and in module `main.tf` L18
+  network_acls_default_action = "Allow"
+  tags                        = local.common_tags
 }
 
 
