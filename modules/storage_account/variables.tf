@@ -45,3 +45,13 @@ EOF
 
   type = string
 }
+
+variable "network_acls_default_action" {
+  description = <<-EOF
+  Specifies the default action of allow or deny when no other rules match.
+
+EOF
+
+  type    = string
+  default = "Deny"
+}

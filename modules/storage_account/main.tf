@@ -18,14 +18,15 @@ resource "azurerm_storage_account" "storage" {
   public_network_access_enabled   = true # Ideally this would be false, however needs a VNET to be created.
   enable_https_traffic_only       = true
   allow_nested_items_to_be_public = false
+  shared_access_key_enabled       = true
   blob_properties {
     delete_retention_policy {
       days = 7
     }
   }
   network_rules {
-    default_action = "Deny"
-    bypass         = ["Metrics", "AzureServices"]
+    default_action = var.network_acls_default_action
+    bypass         = ["Metrics", "AzureServices", "Logging"]
     ip_rules       = var.personal_ip_address # Should be your own IP address, or won't be able to apply changes.
   }
   queue_properties {
@@ -56,7 +57,9 @@ resource "azurerm_storage_account" "storage" {
 
   lifecycle {
     ignore_changes = [
-      customer_managed_key
+      customer_managed_key,
+      # ML Workspace will create additional blob properties, e.g. allowed CORs.
+      blob_properties
     ]
   }
 
@@ -74,14 +77,19 @@ resource "azurerm_storage_container" "storage" {
 # Customer Managed Key (CMK) for storage
 
 resource "azurerm_key_vault" "storage_key_vault" {
-  name                          = substr("${var.name}-key-vault-cmk", 0, 24)
-  location                      = var.location
-  resource_group_name           = var.resource_group_name
-  tenant_id                     = data.azurerm_client_config.current.tenant_id
-  sku_name                      = "standard"
-  soft_delete_retention_days    = 7
-  purge_protection_enabled      = true
-  public_network_access_enabled = false
+  name                       = substr("${var.name}-key-vault-cmk", 0, 24)
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = true
+  # Slightly confusing in the UI, as setting to False, disables ALL access (Disable public access).
+  # Have to enable public access and UI then shows the networking as 'Allow public access from specific virtual networks and IP addresses'.
+  #checkov:skip=CKV_AZURE_189:see above comment
+  public_network_access_enabled = true
+  enable_rbac_authorization     = true
+
   network_acls {
     bypass         = "AzureServices"
     default_action = "Deny"
@@ -161,4 +169,10 @@ resource "azurerm_monitor_diagnostic_setting" "storage_diagnostic_setting" {
   }
 
   depends_on = [azurerm_log_analytics_workspace.storage_analytics_workspace]
+
+  lifecycle {
+    ignore_changes = [
+      metric
+    ]
+  }
 }
