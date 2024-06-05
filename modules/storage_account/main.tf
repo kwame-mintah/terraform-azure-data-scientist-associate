@@ -115,7 +115,7 @@ resource "azurerm_key_vault_access_policy" "storage_storage" {
 }
 
 resource "azurerm_key_vault_key" "storage_key_vault_key" {
-  name            = substr("${var.name}-vault-key", 0, 24)
+  name            = substr("${var.name}-key-vault-key", 0, 24)
   key_vault_id    = azurerm_key_vault.storage_key_vault.id
   key_type        = "RSA"
   key_size        = 2048
@@ -175,4 +175,28 @@ resource "azurerm_monitor_diagnostic_setting" "storage_diagnostic_setting" {
       metric
     ]
   }
+}
+
+resource "azurerm_role_assignment" "key_vault_administrator" {
+  scope                = azurerm_key_vault.storage_key_vault.id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = data.azurerm_client_config.current.object_id
+
+  depends_on = [azurerm_key_vault.storage_key_vault]
+}
+
+resource "azurerm_role_assignment" "key_vault_contributor" {
+  scope                = azurerm_key_vault.storage_key_vault.id
+  role_definition_name = "Key Vault Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+
+  depends_on = [azurerm_key_vault.storage_key_vault]
+}
+
+resource "azurerm_role_assignment" "key_vault_encryption_user" {
+  scope                = azurerm_key_vault.storage_key_vault.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = azurerm_storage_account.storage.identity[0].principal_id
+
+  depends_on = [azurerm_key_vault.storage_key_vault]
 }
