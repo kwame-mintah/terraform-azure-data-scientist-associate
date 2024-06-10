@@ -2,7 +2,7 @@
 
 The main purpose of this repository is to terraform all the resources needed for [Exam DP-100: Designing and Implementing a Data Science Solution on Azure](https://learn.microsoft.com/en-us/credentials/certifications/azure-data-scientist/?practice-assessment-type=certification).
 
-The end goal is to easily deploy all the resources needed for the [self-paced learning](https://learn.microsoft.com/en-us/training/courses/dp-100t01) modules. 
+The end goal is to easily deploy all the resources needed for the [self-paced learning](https://learn.microsoft.com/en-gb/plans/e21nup286eomwx?source=docs) modules. 
 I have created resources following the instructions in the lab exercises to reflect using the Azure Portal UI. Please note your your mileage may (or might) vary, 
 as these resources were deployed using my personal account which has no restrictions.
 
@@ -94,6 +94,7 @@ Code formatting and documentation for `variables` and `outputs` is generated usi
 | <a name="input_arm_subscription_id"></a> [arm\_subscription\_id](#input\_arm\_subscription\_id) | The Subscription ID which should be used. This can also be sourced <br>from the ARM\_SUBSCRIPTION\_ID Environment Variable. | `string` | n/a | yes |
 | <a name="input_arm_tenant_id"></a> [arm\_tenant\_id](#input\_arm\_tenant\_id) | The Tenant ID which should be used. This can also be sourced <br>from the ARM\_TENANT\_ID Environment Variable. | `string` | n/a | yes |
 | <a name="input_cloud_enviornment"></a> [cloud\_enviornment](#input\_cloud\_enviornment) | The Cloud Environment which should be used. Possible values are public,<br>`usgovernment`, `german`, and `china`. Defaults to `public`. This can also be <br>sourced from the ARM\_ENVIRONMENT Environment Variable. | `string` | `"public"` | no |
+| <a name="input_create_tfstate_store"></a> [create\_tfstate\_store](#input\_create\_tfstate\_store) | Create a storage account to remotely store tfstate for the project. **NOTE**: requires<br>local `.tfstate` to be migrated to remote, after storeage account has been created. | `bool` | `false` | no |
 | <a name="input_env_prefix"></a> [env\_prefix](#input\_env\_prefix) | The prefix added to resources in the environment. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the _environment_ to help identify resources. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The Azure Region where the Resource Group should exist. <br>Changing this forces a new Resource Group to be created. | `string` | `"West Europe"` | no |

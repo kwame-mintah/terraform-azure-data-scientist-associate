@@ -55,6 +55,17 @@ EOF
 
 }
 
+variable "create_tfstate_store" {
+  description = <<-EOF
+  Create a storage account to remotely store tfstate for the project. **NOTE**: requires
+  local `.tfstate` to be migrated to remote, after storeage account has been created.
+
+EOF
+
+  type    = bool
+  default = false
+}
+
 variable "environment" {
   description = <<-EOF
   The name of the _environment_ to help identify resources.
