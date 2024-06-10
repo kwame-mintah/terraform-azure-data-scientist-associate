@@ -33,6 +33,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_assigned_user_object_id"></a> [assigned\_user\_object\_id](#input\_assigned\_user\_object\_id) | Users AAD Object Id. | `string` | n/a | yes |
+| <a name="input_assigned_user_tenant_id"></a> [assigned\_user\_tenant\_id](#input\_assigned\_user\_tenant\_id) | Users AAD Tenant Id. | `string` | n/a | yes |
 | <a name="input_key_vault_id"></a> [key\_vault\_id](#input\_key\_vault\_id) | The ID of key vault associated with this Machine Learning Workspace. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Specifies the supported Azure location where the resource exists. <br>Changing this forces a new resource to be created. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. | `string` | n/a | yes |
