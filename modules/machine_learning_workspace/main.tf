@@ -30,10 +30,15 @@ resource "azurerm_machine_learning_compute_instance" "compute_instance" {
   name                          = substr("${var.name}-compute-instance", 0, 24)
   description                   = "A compute instance for workspace ${var.name}"
   machine_learning_workspace_id = azurerm_machine_learning_workspace.ml_workspace.id
-  virtual_machine_size          = "STANDARD_DS2_V2" # Standard DSv2 Family Cluster Dedicated vCPUs
+  virtual_machine_size          = "STANDARD_DS11_V2" # Standard DSv2 Family Cluster Dedicated vCPUs
 
   identity {
     type = "SystemAssigned"
+  }
+
+  assign_to_user {
+    object_id = var.assigned_user_object_id
+    tenant_id = var.assigned_user_tenant_id
   }
 
   tags = merge(

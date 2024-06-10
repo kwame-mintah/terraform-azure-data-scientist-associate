@@ -1,3 +1,22 @@
+variable "assigned_user_object_id" {
+  description = <<-EOF
+    Users AAD Object Id.
+    
+EOF
+
+  type = string
+}
+
+variable "assigned_user_tenant_id" {
+  description = <<-EOF
+    Users AAD Tenant Id.
+    
+EOF
+
+  type = string
+}
+
+
 variable "name" {
   description = <<-EOF
     Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed.
