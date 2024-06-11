@@ -1,4 +1,5 @@
-# Create a Azure Machine Learning Workspace
+# Machine Learning Workspace Module -------------
+# -----------------------------------------------
 
 resource "azurerm_application_insights" "ml_workspace_app_insights" {
   name                = "${var.name}-mlwrkspce-app-insights"
@@ -68,4 +69,13 @@ resource "azurerm_machine_learning_compute_cluster" "compute_cluster" {
   tags = merge(
     var.tags
   )
+}
+
+
+resource "azurerm_role_assignment" "compute_instance_data_scientist_role" {
+  scope                = azurerm_machine_learning_workspace.ml_workspace.id
+  role_definition_name = "AzureML Data Scientist"
+  principal_id         = azurerm_machine_learning_compute_instance.compute_instance.identity[0].principal_id
+
+  depends_on = [azurerm_machine_learning_workspace.ml_workspace]
 }
