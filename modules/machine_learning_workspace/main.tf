@@ -31,7 +31,9 @@ resource "azurerm_machine_learning_compute_instance" "compute_instance" {
   name                          = substr("${var.name}-compute-instance", 0, 24)
   description                   = "A compute instance for workspace ${var.name}"
   machine_learning_workspace_id = azurerm_machine_learning_workspace.ml_workspace.id
-  virtual_machine_size          = "STANDARD_DS11_V2" # Standard DSv2 Family Cluster Dedicated vCPUs
+  # See Sizes for virtual machines in Azure:
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownsize%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#name-structure-breakdown
+  virtual_machine_size = "STANDARD_DS11_V2" # Standard DSv2 Family Cluster Dedicated vCPUs
 
   identity {
     type = "SystemAssigned"
@@ -48,10 +50,12 @@ resource "azurerm_machine_learning_compute_instance" "compute_instance" {
 }
 
 resource "azurerm_machine_learning_compute_cluster" "compute_cluster" {
-  name                          = substr("${var.name}-computer-cluster", 0, 24)
-  description                   = "A compute cluster for workspace ${var.name}"
-  location                      = var.location
-  vm_priority                   = "Dedicated"
+  name        = substr("${var.name}-computer-cluster", 0, 24)
+  description = "A compute cluster for workspace ${var.name}"
+  location    = var.location
+  vm_priority = "Dedicated"
+  # See Sizes for virtual machines in Azure:
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownsize%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#name-structure-breakdown
   vm_size                       = "STANDARD_DS2_V2" # Standard DSv2 Family Cluster Dedicated vCPUs
   machine_learning_workspace_id = azurerm_machine_learning_workspace.ml_workspace.id
   local_auth_enabled            = false
